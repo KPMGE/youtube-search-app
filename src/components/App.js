@@ -8,6 +8,10 @@ import VideoDetail from "./VideoDetail";
 export default class App extends React.Component {
   state = { videos: [], selectedVideo: null };
 
+  componentDidMount() {
+    this.onFomtSubmitHandler("cute cats");
+  }
+
   onFomtSubmitHandler = async (text) => {
     try {
       const responseData = await youtubeApi.get("/search", {
@@ -16,7 +20,10 @@ export default class App extends React.Component {
         },
       });
 
-      this.setState({ videos: responseData.data.items });
+      this.setState({
+        videos: responseData.data.items,
+        selectedVideo: responseData.data.items[0],
+      });
     } catch (err) {
       console.log(err);
     }
@@ -28,13 +35,21 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="ui container" style={{ marginTop: 20 }}>
+      <div className="ui container">
         <SearchBar onFormSubmit={this.onFomtSubmitHandler} />
-        <VideoDetail video={this.state.selectedVideo} />
-        <VideoList
-          onVideoSelect={this.onVideoSelectHandler}
-          videos={this.state.videos}
-        />
+        <div className="ui grid">
+          <div className="ui row">
+            <div className="eleven wide column">
+              <VideoDetail video={this.state.selectedVideo} />
+            </div>
+            <div className="five wide column">
+              <VideoList
+                onVideoSelect={this.onVideoSelectHandler}
+                videos={this.state.videos}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

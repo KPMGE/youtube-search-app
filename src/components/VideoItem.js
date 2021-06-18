@@ -11,7 +11,7 @@ export default class VideoItem extends React.Component {
         onClick={() => this.props.onVideoSelect(this.props.video)}
         className="video-item item"
       >
-        <img className="ui image" src={videoThumbnail} alt="thumb" />
+        <img className="ui image" src={videoThumbnail} alt={videoTitle} />
 
         <div className="content">
           <div className="header">{videoTitle}</div>
